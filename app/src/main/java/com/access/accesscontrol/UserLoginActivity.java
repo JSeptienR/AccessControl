@@ -139,7 +139,7 @@ public class UserLoginActivity extends ActionBarActivity {
 
                 //HttpServiceHandler httpServiceHandler = new HttpServiceHandler();
                 //Login request using using password: modify concatenation
-                //mUrl
+                //mUrl = mUrl;
 
                 //response = httpServiceHandler.downloadUrl(mUrl);
 
