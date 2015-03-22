@@ -3,6 +3,7 @@ package com.access.accesscontrol;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -25,13 +26,14 @@ public class AccessKeyListActivity extends ActionBarActivity {
         mListView = (ListView) findViewById(R.id.listView);
 
         String[] keys = new String[] { "Main Entrance", "Conference Room", "Storage Room", "Laboratory 1" };
-
+        Log.d("List", "Generating list");
         final ArrayList<String> keyList = new ArrayList<String>();
         for (int i = 0; i < keys.length; i++) {
             keyList.add(keys[i]);
         }
-
+        Log.d("List", "adapter");
         final StableArrayAdapter listAdapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, keyList);
+        mListView.setAdapter(listAdapter);
     }
 
 
