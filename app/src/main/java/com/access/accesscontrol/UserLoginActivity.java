@@ -5,11 +5,15 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -25,7 +29,11 @@ public class UserLoginActivity extends ActionBarActivity {
     private EditText mUsernameView;
     private EditText mPasswordView;
 
-    private final String LOGIN_URL= "login";
+    private final String LOGIN_URL= "http://172.17.10.244:8080/Bluetooth_Lock/LoginPhoneUser?";
+    private String USER_ID = "user";
+    private String PASSWORD = "password";
+    private String VALIDATION_TAG = "userOK";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +133,7 @@ public class UserLoginActivity extends ActionBarActivity {
 
             mEmail = email;
             mPassword = password;
-            mUrl = url;
+            mUrl = new StringBuilder().append(url).append("user=" + mEmail).append("&").append("password="+ mPassword).toString();
         }
 
         @Override
@@ -135,30 +143,46 @@ public class UserLoginActivity extends ActionBarActivity {
 
             try {
                 // Simulate network access.
-                Thread.sleep(2000);
+                //Thread.sleep(2000);
 
-                //HttpServiceHandler httpServiceHandler = new HttpServiceHandler();
+                HttpServiceHandler httpServiceHandler = new HttpServiceHandler();
+
                 //Login request using using password: modify concatenation
-                //mUrl = mUrl;
 
-                //response = httpServiceHandler.downloadUrl(mUrl);
+                Log.d("Authentication", mUrl);
+                response = httpServiceHandler.downloadUrl(mUrl);
 
-/*            } catch (IOException e) {
-                return false;*/
-            } catch (InterruptedException e) {
+            } catch (IOException e) {
+                return false;
+            }
+/*            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+
+            boolean validation = false;
+
+            //Create JSON Object from resulting String
+            try {
+                Log.d("JSON", "Creating JSON");
+                JSONObject jsonObject = new JSONObject(response);
+
+                validation = jsonObject.getBoolean(VALIDATION_TAG);
+                Log.d("JSON", "Created JSON");
+
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+//            for (String credential : DUMMY_CREDENTIALS) {
+//                String[] pieces = credential.split(":");
+//                if (pieces[0].equals(mEmail)) {
+//                    // Account exists, return true if the password matches.
+//                    return pieces[1].equals(mPassword);
+//                }
+//            }
 
             // TODO: register the new account here.
-            return true;
+            return validation;
         }
 
         @Override
