@@ -12,6 +12,7 @@ import android.widget.Button;
 public class MainActivity extends ActionBarActivity {
 
     private Button mAccessButton;
+    private Button mLocationListButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +20,17 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         mAccessButton = (Button) findViewById(R.id.button);
+        mLocationListButton = (Button) findViewById(R.id.button2);
 
         mAccessButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AccessActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        mLocationListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AccessKeyListActivity.class);
