@@ -7,6 +7,7 @@ package com.access.accesscontrol;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
@@ -40,6 +41,8 @@ public class Bluetooth {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
+    public static final int VALID = 6;
+    public static final int INVALID = 7;
 
     // Member fields
     private final BluetoothAdapter mAdapter;
@@ -451,7 +454,7 @@ public class Bluetooth {
 
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[10];
             int bytes;
 
             // Keep listening to the InputStream while connected
@@ -462,9 +465,20 @@ public class Bluetooth {
                     Log.d(TAG, "message bytes " + bytes);
                     Log.d(TAG, "message string bytes " + String.valueOf(bytes));
                     Log.d(TAG, "message buffer " + new String(buffer));
+
                     // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(MESSAGE_READ, bytes,
-                            -1, buffer).sendToTarget();
+                    if(buffer[0] == '1')
+                        mHandler.obtainMessage(VALID, bytes,
+                                -1, buffer).sendToTarget();
+                    else
+                        mHandler.obtainMessage(INVALID, bytes,
+                                -1, buffer).sendToTarget();
+
+
+                   // mHandler.obtainMessage(MESSAGE_READ, bytes,
+                     //       -1, buffer).sendToTarget();
+
+                    Arrays.fill(buffer, (byte) 0);
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
@@ -515,6 +529,7 @@ public class Bluetooth {
             // Get the message bytes and tell the BluetoothChatService to write
             //byte[] send = (message + EOT).getBytes();
             byte[] send = message.getBytes();
+            Log.w(TAG, "Send Message:" + new String(send) + " " + send.length);
             this.write(send);
         }
     }

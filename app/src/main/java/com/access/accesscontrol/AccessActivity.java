@@ -32,7 +32,7 @@ public class AccessActivity extends ActionBarActivity {
     private RequestKeyTask mAuthTask = null;
     private final String ACCESS_REQUEST_URL= "http://172.17.10.244:8080/Bluetooth_Lock/LoginPhoneUser?";
 
-    private EditText mRequestText;
+    private TextView mRequestText;
 
     private String VALIDATION_TAG = "userOK";
 
@@ -42,6 +42,7 @@ public class AccessActivity extends ActionBarActivity {
         setContentView(R.layout.activity_access);
 
         status = (TextView) findViewById(R.id.status);
+        mRequestText = (TextView) findViewById(R.id.requestText);
 
         mBluetooth = new Bluetooth(this, mHandler);
 
@@ -125,6 +126,15 @@ public class AccessActivity extends ActionBarActivity {
                     break;
                 case Bluetooth.MESSAGE_READ:
                     Log.d(TAG, "MESSAGE_READ ");
+                    mRequestText.setText("Access Granted");
+                    break;
+                case Bluetooth.VALID:
+                    Log.d(TAG, "VALID");
+                    mRequestText.setText("Access Granted");
+                    break;
+                case Bluetooth.INVALID:
+                    Log.d(TAG, "INVALID");
+                    mRequestText.setText("Invalid");
                     break;
                 case Bluetooth.MESSAGE_DEVICE_NAME:
                     Log.d(TAG, "MESSAGE_DEVICE_NAME "+msg);
