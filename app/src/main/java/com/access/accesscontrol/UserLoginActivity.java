@@ -29,7 +29,7 @@ public class UserLoginActivity extends ActionBarActivity {
     private EditText mUsernameView;
     private EditText mPasswordView;
 
-    private final String LOGIN_URL= "http://172.17.10.244:8080/Bluetooth_Lock/LoginPhoneUser?";
+    private final String LOGIN_URL= "http://172.17.10.27:8080/Bluetooth_Lock/LoginPhoneUser?";
     private String USER_ID = "user";
     private String PASSWORD = "password";
     private String VALIDATION_TAG = "userOK";
@@ -153,8 +153,8 @@ public class UserLoginActivity extends ActionBarActivity {
                 response = httpServiceHandler.downloadUrl(mUrl);
 
             } catch (IOException e) {
-                //return false;
-                return true;
+                return false;
+                //return true;
             }
 /*            } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -183,8 +183,8 @@ public class UserLoginActivity extends ActionBarActivity {
 //            }
 
             // TODO: register the new account here.
-            //return validation;
-            return true;
+            return validation;
+            //return true;
         }
 
         @Override

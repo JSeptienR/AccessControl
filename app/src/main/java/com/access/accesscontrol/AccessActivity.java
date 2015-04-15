@@ -30,11 +30,11 @@ public class AccessActivity extends ActionBarActivity {
     private Button mConnectButton;
 
     private RequestKeyTask mAuthTask = null;
-    private final String ACCESS_REQUEST_URL= "http://172.17.10.244:8080/Bluetooth_Lock/LoginPhoneUser?";
+    private final String LOGIN_URL= "http://172.17.10.27:8080/Bluetooth_Lock/GetKey?";
 
     private TextView mRequestText;
 
-    private String VALIDATION_TAG = "userOK";
+    private String VALIDATION_TAG = "key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,11 @@ public class AccessActivity extends ActionBarActivity {
         mConnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mBluetooth.sendMessage("1");
+                //mBluetooth.sendMessage("1");
+                String user = "jorge";
+                String lock = "1";
+                mAuthTask = new RequestKeyTask(user, lock, LOGIN_URL);
+                mAuthTask.execute((Void) null);
             }
         });
 
@@ -149,12 +153,16 @@ public class AccessActivity extends ActionBarActivity {
 
     public class RequestKeyTask extends AsyncTask<Void, Void, Boolean> {
         private final String mUrl;
-        private final String mPassword;
+        private final String mUser;
+        private final String mLock;
+        private int mKey;
 
-        RequestKeyTask(String password, String url) {
 
-            mPassword = password;
-            mUrl = new StringBuilder().append(url).append("&").append("password="+ mPassword).toString();
+        RequestKeyTask(String user, String lock, String url) {
+
+            mUser = user;
+            mLock = lock;
+            mUrl = url + "user=" + mUser+ "&" + "lock=" + mLock;
         }
 
         @Override
@@ -175,21 +183,20 @@ public class AccessActivity extends ActionBarActivity {
 
             } catch (IOException e) {
                 //return false;
-                return true;
+                return false;
             }
 /*            } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
-
-            boolean validation = false;
 
             //Create JSON Object from resulting String
             try {
                 Log.d("JSON", "Creating JSON");
                 JSONObject jsonObject = new JSONObject(response);
 
-                validation = jsonObject.getBoolean(VALIDATION_TAG);
+                mKey = jsonObject.getInt(VALIDATION_TAG);
                 Log.d("JSON", "Created JSON");
+                Log.d("JSON", Integer.toString(mKey));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -197,7 +204,7 @@ public class AccessActivity extends ActionBarActivity {
 
             // TODO: register the new account here.
             //return validation;
-            return true;
+            return false;
         }
 
         @Override
@@ -208,6 +215,8 @@ public class AccessActivity extends ActionBarActivity {
             if (success) {
                 finish();
                 mRequestText.setText("Access Granted");
+
+                mBluetooth.sendMessage(Integer.toString(mKey));
 
             } else {
                 mRequestText.setText("Access Denied");
