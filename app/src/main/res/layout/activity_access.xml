@@ -8,14 +8,23 @@
 
     <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/status" />
+        android:id="@+id/status"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:gravity="center" />
 
-    <Button
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Access"
-        android:id="@+id/buttonConnect"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/lockImageView"
+        android:layout_below="@+id/status"
+        android:src="@drawable/lock_black"
+        android:layout_above="@+id/requestText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
@@ -26,9 +35,25 @@
         android:layout_height="wrap_content"
         android:text="Validating..."
         android:id="@+id/requestText"
-        android:layout_below="@+id/status"
+        android:textSize="36sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_above="@+id/buttonConnect"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="72dp" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Access"
+        android:id="@+id/buttonConnect"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:clickable="true" />
 
 </RelativeLayout>

@@ -29,7 +29,7 @@ public class UserLoginActivity extends ActionBarActivity {
     private EditText mUsernameView;
     private EditText mPasswordView;
 
-    private final String LOGIN_URL= "http://172.17.10.27:8080/Bluetooth_Lock/LoginPhoneUser?";
+    private final String LOGIN_URL= "http://172.17.10.245:8080/Bluetooth_Lock/LoginPhoneUser?";
     private String USER_ID = "user";
     private String PASSWORD = "password";
     private String VALIDATION_TAG = "userOK";
@@ -153,6 +153,7 @@ public class UserLoginActivity extends ActionBarActivity {
                 response = httpServiceHandler.downloadUrl(mUrl);
 
             } catch (IOException e) {
+                e.printStackTrace();
                 return false;
                 //return true;
             }
@@ -168,10 +169,11 @@ public class UserLoginActivity extends ActionBarActivity {
                 JSONObject jsonObject = new JSONObject(response);
 
                 validation = jsonObject.getBoolean(VALIDATION_TAG);
-                Log.d("JSON", "Created JSON");
+                Log.d("JSON_VALIDATION", String.valueOf(validation));
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                return false;
             }
 
 //            for (String credential : DUMMY_CREDENTIALS) {
@@ -193,9 +195,11 @@ public class UserLoginActivity extends ActionBarActivity {
             //showProgress(false);
 
             if (success) {
-                finish();
                 Intent intent = new Intent(UserLoginActivity.this, MainActivity.class);
+                intent.putExtra("user", mEmail);
                 UserLoginActivity.this.startActivity(intent);
+                finish();
+
 
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

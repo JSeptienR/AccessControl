@@ -22,10 +22,21 @@ public class MainActivity extends ActionBarActivity {
         mAccessButton = (Button) findViewById(R.id.button);
         mLocationListButton = (Button) findViewById(R.id.button2);
 
+        final String  user;
+
+        Bundle extras = getIntent().getExtras();
+        if(extras !=null) {
+            user = extras.getString("user");
+        } else {
+            user = "";
+        }
+
         mAccessButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AccessActivity.class);
+                if(user != null)
+                intent.putExtra("user", user);
                 MainActivity.this.startActivity(intent);
             }
         });
@@ -34,6 +45,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AccessKeyListActivity.class);
+
                 MainActivity.this.startActivity(intent);
             }
         });

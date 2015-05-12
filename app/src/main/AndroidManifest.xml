@@ -41,6 +41,11 @@
             android:name=".AccessActivity"
             android:label="@string/title_activity_access" >
         </activity>
+        <activity
+            android:name=".PinActivity"
+            android:label="@string/title_activity_pin"
+            android:windowSoftInputMode="stateVisible|adjustPan">
+        </activity>
     </application>
 
 </manifest>

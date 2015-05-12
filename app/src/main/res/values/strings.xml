@@ -7,4 +7,5 @@
     <string name="title_activity_access_key_list">AccessKeyListActivity</string>
     <string name="title_activity_user_login">UserLoginActivity</string>
     <string name="title_activity_access">AccessActivity</string>
+    <string name="title_activity_pin">PinActivity</string>
 </resources>
